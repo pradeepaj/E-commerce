@@ -15,10 +15,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.BeanUtils;
 
 import com.hcl.ecommerce.dto.ProductDto;
+import com.hcl.ecommerce.entity.Category;
 import com.hcl.ecommerce.entity.Product;
 import com.hcl.ecommerce.entity.User;
 import com.hcl.ecommerce.exception.ProductNotFoundException;
-import com.hcl.ecommerce.repository.ProductRepository;
+import com.hcl.ecommerce.repository.IProductRepository;
+import com.hcl.ecommerce.service.ProductServiceImpl;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class ProductServiceImplTest {
@@ -26,12 +28,14 @@ public class ProductServiceImplTest {
 	@InjectMocks
 	private ProductServiceImpl productService;
 	@Mock
-	private ProductRepository productRepository;
+	private IProductRepository productRepository;
 
 	@Test
 	public void addProductTest() {
 		User user = new User();
-		ProductDto productDto = new ProductDto(1, "ktm", 2345, 4, "Bike", user);
+		Category category=new Category(1,"bike", null);
+		ProductDto productDto=new ProductDto("ktm", 1234, 4, user, category);
+		
 		Product product = new Product();
 		BeanUtils.copyProperties(productDto, product);
 		when(productRepository.save(product)).thenReturn(product);
@@ -41,8 +45,9 @@ public class ProductServiceImplTest {
 	@Test
 	public void  allProductsTest() throws ProductNotFoundException{
 		User user=new User();
-		Product product=new Product(1, "ktm", 2345, 4, "Bike",user);
-		Product product1=new Product(2, "kt", 2345, 4, "Bike",user);
+		Category category=new Category(1,"bike", null);
+		Product product=new Product(1, "ktm", 2345, 4, user,category);
+		Product product1=new Product(2, "kt", 2345, 4,user,category);
 		List<Product> prolist=new ArrayList<>();
 		prolist.add(product);
 		prolist.add(product1);
@@ -52,10 +57,11 @@ public class ProductServiceImplTest {
 	}
 	@Test
 	public void  getProductsByCategoryTest() throws ProductNotFoundException{
-		User user=new User();
-		Product product=new Product(1, "ktm", 2345, 4, "Bike",user);
-		Product product1=new Product(2, "kt", 2345, 4, "Bike",user);
-		List<Product> prolist=new ArrayList<>();
+		User user = new User();
+		Category category = new Category(1, "bike", null);
+		Product product = new Product(1, "ktm", 2345, 4, user, category);
+		Product product1 = new Product(2, "kt", 2345, 4, user, category);
+		List<Product> prolist = new ArrayList<>();
 		prolist.add(product);
 		prolist.add(product1);
 		when(productRepository.findByCategory(Mockito.anyString())).thenReturn(prolist);
@@ -64,10 +70,11 @@ public class ProductServiceImplTest {
 	}
 	@Test
 	public void getProductsByProductNameTest() throws ProductNotFoundException{
-		User user=new User();
-		Product product=new Product(1, "ktm", 2345, 4, "Bike",user);
-		Product product1=new Product(2, "kt", 2345, 4, "Bike",user);
-		List<Product> prolist=new ArrayList<>();
+		User user = new User();
+		Category category = new Category(1, "bike", null);
+		Product product = new Product(1, "ktm", 2345, 4, user, category);
+		Product product1 = new Product(2, "kt", 2345, 4, user, category);
+		List<Product> prolist = new ArrayList<>();
 		prolist.add(product);
 		prolist.add(product1);
 		when(productRepository.findByProductName(Mockito.anyString())).thenReturn(prolist);

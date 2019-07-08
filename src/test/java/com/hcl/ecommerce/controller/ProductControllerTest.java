@@ -28,11 +28,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcl.ecommerce.dto.ProductDto;
+import com.hcl.ecommerce.entity.Category;
 import com.hcl.ecommerce.entity.Product;
 import com.hcl.ecommerce.entity.User;
-import com.hcl.ecommerce.service.ProductService;
+import com.hcl.ecommerce.service.IProductService;
 
 import junit.framework.TestCase;
+
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = { TestCase.class, ProductController.class })
 @WebAppConfiguration
@@ -41,7 +43,7 @@ public class ProductControllerTest {
 	@InjectMocks
 	private ProductController productController;
 	@Mock
-	private ProductService productService;
+	private IProductService productService;
 
 	private MockMvc mockMvc;
 
@@ -50,12 +52,13 @@ public class ProductControllerTest {
 		MockitoAnnotations.initMocks(this);
 		this.mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
 	}
+
 	@Test
 	public void addProductTest() throws JsonProcessingException, Exception {
-		
-		User user=new User();
-		ProductDto productDto = new ProductDto(1, "ktm", 2345, 4, "Bike",user);
-		Product product=new Product();
+		Category category = new Category(1, "bike", null);
+		User user = new User();
+		ProductDto productDto = new ProductDto("ktm", 2345, 4,user, category );
+		Product product = new Product();
 		BeanUtils.copyProperties(productDto, product);
 		ResponseEntity<Product> expResult = new ResponseEntity<>(product, HttpStatus.CREATED);
 		when(productService.addProduct(productDto)).thenReturn(product);
@@ -64,52 +67,56 @@ public class ProductControllerTest {
 		ResponseEntity<Product> result = productController.addProduct(productDto);
 		assertEquals(expResult, result);
 	}
+
 	@Test
 	public void getAllProductsTest() throws JsonProcessingException, Exception {
-		User user=new User();
-		Product product=new Product(1, "ktm", 2345, 4, "Bike",user);
-		Product product1=new Product(2, "kt", 2345, 4, "Bike",user);
-		List<Product> prolist=new ArrayList<>();
+		User user = new User();
+		Category category = new Category(1, "bike", null);
+		Product product = new Product(1, "ktm", 2345, 4, user, category);
+		Product product1 = new Product(2, "kt", 2345, 4, user, category);
+		List<Product> prolist = new ArrayList<>();
 		prolist.add(product);
 		prolist.add(product1);
-		ResponseEntity<List<Product>> expResult=new ResponseEntity<>(prolist,HttpStatus.OK);
+		ResponseEntity<List<Product>> expResult = new ResponseEntity<>(prolist, HttpStatus.OK);
 		when(productService.allProducts()).thenReturn(prolist);
-		mockMvc.perform(get("/users/products").contentType(MediaType.APPLICATION_JSON).content(asJsonString(prolist))).andReturn();
-		ResponseEntity<List<Product>> actResult=productController.allProducts();
+		mockMvc.perform(get("/users/products").contentType(MediaType.APPLICATION_JSON).content(asJsonString(prolist)))
+				.andReturn();
+		ResponseEntity<List<Product>> actResult = productController.allProducts();
 		assertEquals(expResult, actResult);
 	}
+
 	@Test
 	public void getProductsByCategory() throws JsonProcessingException, Exception {
-		User user=new User();
-		Product product=new Product(1, "ktm", 2345, 4, "Bike",user);
-		Product product1=new Product(2, "kt", 2345, 4, "Bike",user);
-		List<Product> prolist=new ArrayList<>();
-		ResponseEntity<List<Product>> expResult=new ResponseEntity<>(prolist,HttpStatus.OK);
+		User user = new User();
+		Category category = new Category(1, "bike", null);
+		Product product = new Product(1, "ktm", 2345, 4, user, category);
+		Product product1 = new Product(2, "kt", 2345, 4, user, category);
+		List<Product> prolist = new ArrayList<>();
+
+		ResponseEntity<List<Product>> expResult = new ResponseEntity<>(prolist, HttpStatus.OK);
 		when(productService.getProductsByCategory(Mockito.anyString())).thenReturn(prolist);
-		mockMvc.perform(get("/users/categories/{category}","Seller").contentType(MediaType.APPLICATION_JSON).content(asJsonString(prolist))).andReturn();
-		ResponseEntity<List<Product>> actResult=productController.getProductsByCategory("Seller");
+		mockMvc.perform(get("/users/categories/{category}", "Seller").contentType(MediaType.APPLICATION_JSON)
+				.content(asJsonString(prolist))).andReturn();
+		ResponseEntity<List<Product>> actResult = productController.getProductsByCategory("Seller");
 		assertEquals(expResult, actResult);
 	}
+
 	@Test
 	public void getProductsByProductNameTest() throws JsonProcessingException, Exception {
-		User user=new User();
-		Product product=new Product(1, "ktm", 2345, 4, "Bike",user);
-		Product product1=new Product(2, "kt", 2345, 4, "Bike",user);
-		List<Product> prolist=new ArrayList<>();
-		ResponseEntity<List<Product>> expResult=new ResponseEntity<>(prolist,HttpStatus.OK);
+		User user = new User();
+		Category category = new Category(1, "bike", null);
+		Product product = new Product(1, "ktm", 2345, 4, user, category);
+		Product product1 = new Product(2, "kt", 2345, 4, user, category);
+
+		List<Product> prolist = new ArrayList<>();
+		ResponseEntity<List<Product>> expResult = new ResponseEntity<>(prolist, HttpStatus.OK);
 		when(productService.getProductsByProductName(Mockito.anyString())).thenReturn(prolist);
-		mockMvc.perform(get("/users/{productName}","Bike").contentType(MediaType.APPLICATION_JSON).content(asJsonString(prolist))).andReturn();
-		ResponseEntity<List<Product>> actResult=productController.getProductsByProductName("Bike");
+		mockMvc.perform(get("/users/{productName}", "Bike").contentType(MediaType.APPLICATION_JSON)
+				.content(asJsonString(prolist))).andReturn();
+		ResponseEntity<List<Product>> actResult = productController.getProductsByProductName("Bike");
 		assertEquals(expResult, actResult);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public static String asJsonString(final Object object) throws JsonProcessingException {
 		return new ObjectMapper().writeValueAsString(object);
 

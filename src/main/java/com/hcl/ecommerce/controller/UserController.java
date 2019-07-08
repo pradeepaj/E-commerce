@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hcl.ecommerce.dto.UserDto;
 import com.hcl.ecommerce.entity.User;
 import com.hcl.ecommerce.exception.UserNotFoundException;
-import com.hcl.ecommerce.service.UserService;
+import com.hcl.ecommerce.service.IUserService;
 
 @RestController
 @RequestMapping("/users")
@@ -26,9 +26,9 @@ import com.hcl.ecommerce.service.UserService;
 public class UserController {
 
 	@Autowired
-	private UserService userService;
+	private IUserService userService;
 
-	@PostMapping("/sign-up")
+	@PostMapping("/register")
 	public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
 		User user = userService.addUser(userDto);
 		return new ResponseEntity<>(user, HttpStatus.CREATED);

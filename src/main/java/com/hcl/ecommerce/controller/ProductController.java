@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hcl.ecommerce.dto.ProductDto;
 import com.hcl.ecommerce.entity.Product;
 import com.hcl.ecommerce.exception.ProductNotFoundException;
-import com.hcl.ecommerce.service.ProductService;
+import com.hcl.ecommerce.service.IProductService;
 
 @RestController
 @RequestMapping("/users")
@@ -25,9 +25,9 @@ import com.hcl.ecommerce.service.ProductService;
 public class ProductController {
 
 	@Autowired
-	private ProductService productService;
+	private IProductService productService;
 
-	@PostMapping("/products")
+	@PostMapping("/products/add")
 	public ResponseEntity<Product> addProduct(@RequestBody ProductDto productDto) {
 		Product product = productService.addProduct(productDto);
 		return new ResponseEntity<>(product, HttpStatus.CREATED);
@@ -40,9 +40,9 @@ public class ProductController {
 		return new ResponseEntity<>(product, HttpStatus.OK);
 	}
 
-	@GetMapping("/products/categories/{category}")
-	public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) throws ProductNotFoundException {
-		List<Product> product = productService.getProductsByCategory(category);
+	@GetMapping("/products/category/{categoryName}")
+	public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String categoryName) throws ProductNotFoundException {
+		List<Product> product = productService.getProductsByCategory(categoryName);
 		return new ResponseEntity<>(product, HttpStatus.OK);
 	}
 

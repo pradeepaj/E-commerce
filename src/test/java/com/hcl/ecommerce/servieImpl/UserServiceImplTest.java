@@ -18,14 +18,15 @@ import org.springframework.beans.BeanUtils;
 import com.hcl.ecommerce.dto.UserDto;
 import com.hcl.ecommerce.entity.User;
 import com.hcl.ecommerce.exception.UserNotFoundException;
-import com.hcl.ecommerce.repository.UserRepository;
+import com.hcl.ecommerce.repository.IUserRepository;
+import com.hcl.ecommerce.service.UserServiceImpl;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class UserServiceImplTest {
 	@InjectMocks
 	private UserServiceImpl userService;
 	@Mock
-	private UserRepository userRepository;
+	private IUserRepository userRepository;
 
 	@Test
 	public void addUserTest() {
@@ -73,7 +74,7 @@ public class UserServiceImplTest {
 	}
 
 	@Test
-	public void userLoginTest() {
+	public void userLoginTest() throws UserNotFoundException {
 		User user = new User(1, "aj", "aj", "Seller", null);
 		when(userRepository.findByUserNameAndPassword("aj", "aj")).thenReturn(user);
 		User actres = userService.userLogin("aj", "aj");

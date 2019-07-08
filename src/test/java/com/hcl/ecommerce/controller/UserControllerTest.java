@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcl.ecommerce.dto.UserDto;
 import com.hcl.ecommerce.entity.User;
 import com.hcl.ecommerce.exception.UserNotFoundException;
-import com.hcl.ecommerce.service.UserService;
+import com.hcl.ecommerce.service.IUserService;
 
 import junit.framework.TestCase;
 
@@ -42,7 +42,7 @@ public class UserControllerTest {
 	@InjectMocks
 	private UserController userController;
 	@Mock
-	private UserService userService;
+	private IUserService userService;
 
 	private MockMvc mockMvc;
 

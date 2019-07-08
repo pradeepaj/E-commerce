@@ -1,4 +1,4 @@
-package com.hcl.ecommerce.servieImpl;
+package com.hcl.ecommerce.service;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import com.hcl.ecommerce.dto.UserDto;
 import com.hcl.ecommerce.entity.User;
 import com.hcl.ecommerce.exception.UserNotFoundException;
-import com.hcl.ecommerce.repository.UserRepository;
-import com.hcl.ecommerce.service.UserService;
+import com.hcl.ecommerce.repository.IUserRepository;
+import com.hcl.ecommerce.service.IUserService;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 	@Autowired
-	private UserRepository userRepository;
+	private IUserRepository userRepository;
 
 	@Override
 	public User addUser(UserDto userDto) {
@@ -58,9 +58,17 @@ else {
 	}
 
 	@Override
-	public User userLogin(String userName, String password) {
+	public User userLogin(String userName, String password) throws UserNotFoundException {
 	
-		return userRepository.findByUserNameAndPassword(userName,password);
+		User user=userRepository.findByUserNameAndPassword(userName,password);
+		if(user!=null) {
+			return user;
+		
 	}
-
+		else
+		{
+			throw new UserNotFoundException(" Please Enter Valid Credentials");
+		}
+	}
 }
+

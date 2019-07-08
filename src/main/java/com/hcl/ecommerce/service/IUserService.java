@@ -6,7 +6,7 @@ import com.hcl.ecommerce.dto.UserDto;
 import com.hcl.ecommerce.entity.User;
 import com.hcl.ecommerce.exception.UserNotFoundException;
 
-public interface UserService {
+public interface IUserService {
 
 	User addUser(UserDto userDto);
 
@@ -16,6 +16,6 @@ public interface UserService {
 
 	List<User> getUserByRole(String role);
 
-	User userLogin(String userName, String password);
+	User userLogin(String userName, String password) throws UserNotFoundException;
 
 }

@@ -2,7 +2,7 @@ package com.hcl.ecommerce.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.hcl.ecommerce.entity.User;
-import com.hcl.ecommerce.service.UserService;
+import com.hcl.ecommerce.service.IUserService;
 
 import junit.framework.TestCase;
 @RunWith(MockitoJUnitRunner.class)
@@ -31,7 +31,7 @@ public class LoginControllerTest {
 	@InjectMocks
 	private LoginController loginController;
 	@Mock
-	private UserService userService;
+	private IUserService userService;
 
 	private MockMvc mockMvc;
 
@@ -47,7 +47,7 @@ public class LoginControllerTest {
 		
 		ResponseEntity<User> expResult = new ResponseEntity<>(user, HttpStatus.OK);
 		when(userService.userLogin("aj","aj")).thenReturn(user);
-		mockMvc.perform(put("/users/sign-in","aj","aj").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/users/login","aj","aj").contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
 		ResponseEntity<User> result = loginController.userLogin("aj","aj");
 		assertEquals(expResult, result);

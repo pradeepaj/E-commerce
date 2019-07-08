@@ -1,4 +1,4 @@
-package com.hcl.ecommerce.servieImpl;
+package com.hcl.ecommerce.service;
 
 import java.util.List;
 
@@ -9,18 +9,20 @@ import org.springframework.stereotype.Service;
 import com.hcl.ecommerce.dto.ProductDto;
 import com.hcl.ecommerce.entity.Product;
 import com.hcl.ecommerce.exception.ProductNotFoundException;
-import com.hcl.ecommerce.repository.ProductRepository;
-import com.hcl.ecommerce.service.ProductService;
+import com.hcl.ecommerce.repository.IProductRepository;
+import com.hcl.ecommerce.service.IProductService;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements IProductService {
 	@Autowired
-	private ProductRepository productRepository;
+	private IProductRepository productRepository;
 
 	@Override
 	public Product addProduct(ProductDto productDto) {
 		Product product = new Product();
+	
 		BeanUtils.copyProperties(productDto, product);
+		
 		return productRepository.save(product);
 
 	}
@@ -39,14 +41,16 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> getProductsByCategory(String category) throws ProductNotFoundException {
-		List<Product> product = productRepository.findByCategory(category);
+	public List<Product> getProductsByCategory(String categoryName) throws ProductNotFoundException {
+		List<Product> product = productRepository.findByCategory(categoryName);
+		System.out.println(product);
 		if(product.size()!=0) {
 		return product;
+		
 		}
 		else
 		{
-			throw new ProductNotFoundException("Requested Category not available "+category);
+			throw new ProductNotFoundException("Requested Category not available "+categoryName);
 		}
 	}
 

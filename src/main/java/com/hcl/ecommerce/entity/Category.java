@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,28 +20,22 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "userDetails")
+@Table(name = "categoryDetails")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-
-public class User implements Serializable {
+public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
+	private int categoryId;
 	@JsonIgnore
-	@NotBlank
-	private String userName;
-	@NotBlank
+	private String categoryName;
 	@JsonIgnore
-	private String password;
-	@JsonIgnore
-	private String role;
-	@JsonIgnore
-	@OneToMany(cascade={CascadeType.ALL}, mappedBy="user")
-    private List<Product> product;
+	@OneToMany(cascade={CascadeType.ALL}, mappedBy="category")
+	private List<Product> product;
+	
 
 }

@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hcl.ecommerce.dto.ProductDto;
+import com.hcl.ecommerce.entity.Category;
 import com.hcl.ecommerce.entity.Product;
+import com.hcl.ecommerce.entity.User;
 import com.hcl.ecommerce.exception.ProductNotFoundException;
 import com.hcl.ecommerce.repository.IProductRepository;
-import com.hcl.ecommerce.service.IProductService;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -20,7 +21,12 @@ public class ProductServiceImpl implements IProductService {
 	@Override
 	public Product addProduct(ProductDto productDto) {
 		Product product = new Product();
-	
+		User user=new User();
+		Category category=new Category();
+		user.setUserId(productDto.getUserId());
+		category.setCategoryId(productDto.getCategoryId());
+	product.setUser(user);
+	product.setCategory(category);
 		BeanUtils.copyProperties(productDto, product);
 		
 		return productRepository.save(product);

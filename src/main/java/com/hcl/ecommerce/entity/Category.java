@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,15 +18,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "categoryDetails")
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@NoArgsConstructor
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -34,7 +33,7 @@ public class Category implements Serializable {
 	@JsonIgnore
 	private String categoryName;
 	@JsonIgnore
-	@OneToMany(cascade={CascadeType.ALL}, mappedBy="category")
+	@OneToMany(targetEntity=Product.class, mappedBy="category",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Product> product;
 	
 

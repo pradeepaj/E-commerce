@@ -55,9 +55,8 @@ public class ProductControllerTest {
 
 	@Test
 	public void addProductTest() throws JsonProcessingException, Exception {
-		Category category = new Category(1, "bike", null);
-		User user = new User();
-		ProductDto productDto = new ProductDto("ktm", 2345, 4,user, category );
+		
+		ProductDto productDto = new ProductDto("ktm", 2345, 4,1, 1 );
 		Product product = new Product();
 		BeanUtils.copyProperties(productDto, product);
 		ResponseEntity<Product> expResult = new ResponseEntity<>(product, HttpStatus.CREATED);

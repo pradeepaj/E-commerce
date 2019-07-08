@@ -91,7 +91,7 @@ public class UserControllerTest {
 	@Test
 	public void getUserByRole() throws JsonProcessingException, Exception {
 		User user = new User(1, "aj", "aj", "Seller", null);
-		User user1 = new User(2, "pradi", "pradi", "Seller", null);
+		User user1 = new User(1, "ajer", "ajt", "Seller", null);
 		List<User> users = new ArrayList<>();
 		ResponseEntity<List<User>> expResult = new ResponseEntity<List<User>>(users, HttpStatus.OK);
 		users.add(user);

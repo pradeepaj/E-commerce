@@ -33,8 +33,8 @@ public class ProductServiceImplTest {
 	@Test
 	public void addProductTest() {
 		User user = new User();
-		Category category=new Category(1,"bike", null);
-		ProductDto productDto=new ProductDto("ktm", 1234, 4, user, category);
+		Category category=new Category(1, "fz", null);
+		ProductDto productDto=new ProductDto("ktm", 1234, 4, 1, 1);
 		
 		Product product = new Product();
 		BeanUtils.copyProperties(productDto, product);
@@ -58,7 +58,7 @@ public class ProductServiceImplTest {
 	@Test
 	public void  getProductsByCategoryTest() throws ProductNotFoundException{
 		User user = new User();
-		Category category = new Category(1, "bike", null);
+		Category category=new Category(1, "fz", null);
 		Product product = new Product(1, "ktm", 2345, 4, user, category);
 		Product product1 = new Product(2, "kt", 2345, 4, user, category);
 		List<Product> prolist = new ArrayList<>();
@@ -71,7 +71,7 @@ public class ProductServiceImplTest {
 	@Test
 	public void getProductsByProductNameTest() throws ProductNotFoundException{
 		User user = new User();
-		Category category = new Category(1, "bike", null);
+		Category category=new Category(1, "fz", null);
 		Product product = new Product(1, "ktm", 2345, 4, user, category);
 		Product product1 = new Product(2, "kt", 2345, 4, user, category);
 		List<Product> prolist = new ArrayList<>();

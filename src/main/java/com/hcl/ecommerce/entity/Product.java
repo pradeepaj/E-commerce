@@ -21,8 +21,8 @@ import lombok.Setter;
 @Table(name = "prdouctDetails")
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 
 public class Product implements Serializable {
 
@@ -39,8 +39,9 @@ public class Product implements Serializable {
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "U_Id", referencedColumnName = "userId")
+	@JoinColumn(name = "userId", referencedColumnName = "userId")
 	private User user;
+
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "C_Id", referencedColumnName = "categoryId")
